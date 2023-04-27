@@ -9,11 +9,14 @@ const Login = () => {
         window.location.href = "/auth/register";
     };
 
+    const navigateToDashboard = () => {
+        window.location.href = "/dashboard/home";
+    };
 
   return (
     <>
       <Head>
-        <title>Assessment App - Signup</title>
+        <title>Assessment App - Login </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex justify-between items-center py-4 px-8 bg-white">
@@ -27,7 +30,7 @@ const Login = () => {
           Welcome to Assessment App
         </h1>
         <div className="mt-8 border-2 border-gray-200 rounded-lg p-8 max-w-lg w-full">
-          <h2 className="text-2xl font-bold mb-4">Login to see dashboard</h2>
+          <h2 className="text-2xl font-bold mb-4">Login Below</h2>
           <form>
             <div className="mb-4">
               <label className="block text-gray-700 font-bold mb-2" htmlFor="email">
@@ -54,6 +57,7 @@ const Login = () => {
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 align-middle"
               type="submit"
+              onClick={navigateToDashboard}
             >
               Login
             </button>
