@@ -1,6 +1,16 @@
 import Head from "next/head";
 
 const index = () => {
+
+  // funtion to navigate to the signup page
+  const navigateToSignup = () => {
+    window.location.href = "/auth/register";
+  };
+  
+  const navigateToLogin = () => {
+    window.location.href = "/auth/login";
+  };
+
   return (
     <>
       <Head>
@@ -8,8 +18,8 @@ const index = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex justify-between items-center py-4 px-8 bg-white">
-        <div className="text-lg font-bold">Assessment App</div>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <div className="text-lg font-bold cursor-pointer">Assessment App</div>
+        <button onClick={navigateToSignup} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Sign Up
         </button>
       </div>
@@ -20,12 +30,12 @@ const index = () => {
         <p className="mt-4 text-lg text-center">
           This is an assessment project app so without wasting your time let's
         </p>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-8">
+        <button onClick={navigateToLogin} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-8">
           Get Started
         </button>
       </div>
       <footer className="py-4 px-8 bg-gray-200 text-gray-600 text-sm text-center">
-        &copy; 2021 Example App. All rights reserved.
+        &copy; 2023 Assessment App. All rights reserved.
       </footer>
     </>
   );
