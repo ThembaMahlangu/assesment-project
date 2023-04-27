@@ -1,7 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
 import { questions } from "./questions";
 import { toast } from "react-hot-toast";
+import axios from "axios";
 
 const ModelPrediction = () => {
   const [inputValues, setInputValues] = useState({});
@@ -16,32 +16,32 @@ const ModelPrediction = () => {
     }));
   };
 
-  const handleSubmit = async (event) => {
+    const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const token = "9307bfd5fa011428ff198bb37547f979";
-      const response = await fetch(
-        "https://api.up2tom.com/v3/model/58d3bcf97c6b1644db73ad12",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            method: "POST",
-            ContentType: "application/json",
-          },
-        },
-        {
-          type: "scenario",
-          attributes: {
+    const token = "9307bfd5fa011428ff198bb37547f979";
+    const model = "58d3bcf97c6b1644db73ad12";
+    const apiUrl = `https://api.up2tom.com/v3/decision/${model}`;
+    const data = {
+        data: {
+        type: "scenario",
+        attributes: {
             input: inputValues,
-          },
-        }
-      );      
-      setPrediction(response?.data.data.attributes.output.prediction);
+        },
+        },
+    };
+    try {
+        const response = await axios.post(apiUrl, data, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/vnd.api+json",
+        },
+        });
+        setPrediction(response.data);
     } catch (error) {
-      console.error(error.message);
-      alert(error.message)
+        console.error(error.message);
+        alert(error.message);
     }
-  };
+    };
 
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -94,8 +94,10 @@ const ModelPrediction = () => {
       </form>
       {prediction && (
         <div className="mt-4 bg-green-100 p-4 rounded">
-          <p className="font-bold mb-2">Prediction:</p>
-          <p>{prediction}</p>
+          <p className="font-bold mb-2">Decision Infomation:</p>
+          <p>Decision: {prediction.data.attributes.decision}</p>
+          <p>Level of confidence: {prediction.data.attributes.confidence}</p>
+          <p>Date of decision: {new Date(prediction.data.attributes.timestamp).toLocaleDateString("en-UK")}</p>
         </div>
       )}
     </div>

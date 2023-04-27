@@ -1,28 +1,27 @@
 export const questions = [
     {
       label: "Temperature:",
-      name: "temperature",
+      name: "INPUTVAR1",
       type: "number",
-      default: 1.0,
     },
     {
       label: "Gender:",
-      name: "gender",
+      name: "INPUTVAR2",
       type: "select",
       options: [
         { value: "", label: "Select gender" },
-        { value: "Male", label: "Male" },
+        { value: "Female", label: "Male" },
         { value: "Female", label: "Female" },
       ],
     },
     {
       label: "Age:",
-      name: "age",
+      name: "INPUTVAR3",
       type: "number",
     },
     {
       label: "Sensitivity to caffeine:",
-      name: "sensitivity_to_caffeine",
+      name: "INPUTVAR4",
       type: "select",
       options: [
           { value: "", label: "Select sensitivity to caffeine" },
@@ -32,7 +31,7 @@ export const questions = [
     },
     {
       label: "Time of the day:",
-      name: "time_of_the_day",
+      name: "INPUTVAR5",
       type: "select",
       options: [
           { value: "", label: "Select time of the day" },
@@ -43,7 +42,7 @@ export const questions = [
     },
     {
       label: "Pregnancy:",
-      name: "pregnancy",
+      name: "INPUTVAR6",
       type: "select",
       options: [
           { value: "", label: "Select pregnancy" },
@@ -53,7 +52,7 @@ export const questions = [
     },
     {
       label: "Health Consciousness:",
-      name: "health_consciousness",
+      name: "INPUTVAR7",
       type: "select",
       options: [
           { value: "", label: "Select health consciousness" },
@@ -63,12 +62,12 @@ export const questions = [
     },
     {
       label: "Number of drinks consumed per day:",
-      name: "number_of_drinks_consumed_per_day",
+      name: "INPUTVAR8",
       type: "number",
     },
     {
       label: "Number of drinks consumed today:",
-      name: "number_of_drinks_consumed_today",
+      name: "INPUTVAR9",
       type: "number",
     },
   ];
