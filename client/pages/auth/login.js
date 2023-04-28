@@ -1,6 +1,9 @@
 import Head from "next/head";
+import { useState } from "react";
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
     const navigateToHome = () => {
         window.location.href = "/";
     };
@@ -9,8 +12,25 @@ const Login = () => {
         window.location.href = "/auth/register";
     };
 
-    const navigateToDashboard = () => {
-        window.location.href = "/dashboard/home";
+    // function to call the API to login the user and redirect to Dashboard
+    const loginUser = async (event) => {
+        event.preventDefault();
+        const res = await fetch(`${process.env.NEXT_BASE_URL}/api/users/login`, {
+            body: JSON.stringify({
+                email: email,
+                password: password,
+            }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+        });
+        const result = await res.json();
+        if (result.error) {
+            alert(result.error);
+        } else {
+            window.location.href = "/dashboard/home";
+        }
     };
 
   return (
@@ -31,7 +51,7 @@ const Login = () => {
         </h1>
         <div className="mt-8 border-2 border-gray-200 rounded-lg p-8 max-w-lg w-full">
           <h2 className="text-2xl font-bold mb-4">Login Below</h2>
-          <form>
+          <form onSubmit={loginUser}>
             <div className="mb-4">
               <label className="block text-gray-700 font-bold mb-2" htmlFor="email">
                 Email
@@ -40,8 +60,12 @@ const Login = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="email"
                 type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
               />
+
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 font-bold mb-2" htmlFor="password">
@@ -51,13 +75,14 @@ const Login = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="password"
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
               />
             </div>
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 align-middle"
-              type="submit"
-              onClick={navigateToDashboard}
+              onClick={loginUser}
             >
               Login
             </button>

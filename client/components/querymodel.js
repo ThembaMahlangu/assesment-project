@@ -98,6 +98,7 @@ const ModelPrediction = () => {
           <p>Decision: {prediction.data.attributes.decision}</p>
           <p>Level of confidence: {prediction.data.attributes.confidence}</p>
           <p>Date of decision: {new Date(prediction.data.attributes.timestamp).toLocaleDateString("en-UK")}</p>
+          <p>Type of query: {prediction.data.type}</p>
         </div>
       )}
     </div>
