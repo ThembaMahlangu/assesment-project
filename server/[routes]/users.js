@@ -45,19 +45,30 @@ router.post('/register', [
 
 router.post("/login", (req, res) => {
     const { email, password } = req.body;
-    authenticateUser(email, password)
-      .then(({ token, userId }) => {
-        res.status(200).json({ message: "Successful login, login tracker active", token: token, userId: userId });
-        // Update last login
-        const user = User.findOne({ _id: userId }).then((user) => {
-          user.lastLogin = new Date();
-          user.save();
-        });
-        })
-        .catch((err) => {
+    User.findOne({ email: email })
+      .then((user) => {
+        if (!user) {
+          res.status(404).json({ message: "User does not exist" });
+          return;
+        }
+        authenticateUser(email, password)
+          .then(({ token, userId }) => {
+            res.status(200).json({
+              message: "Successful login, login tracker active",
+              token: token,
+              userId: userId,
+            });
+            user.lastLogin = new Date();
+            user.save();
+          })
+          .catch((err) => {
             res.status(401).json({ error: err.message });
-        });
-});
+          });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  });  
 
 router.get("/", async (req, res) => {
     try {
