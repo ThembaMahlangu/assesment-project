@@ -4,18 +4,20 @@ const Decision = require('../models/decision');
 const User = require('../models/user');
 const { validateToken, authenticateUser } = require('../middleware/auth');
 const { body, validationResult } = require('express-validator');
-const user = require('../models/user');
 
-router.post('/', [
+router.post('/', validateToken, [
     body("decision").exists,
     body("confidence").exists,
-], validateToken, async (req, res) => {
+], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }
+    const user = await User.findById(req.userId);
+    if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+    }
     try {
-        const user = await User.findById(req.user.id);
         const typeofdata ="Scenario"
         const decision = new Decision({
             name: user.name,
