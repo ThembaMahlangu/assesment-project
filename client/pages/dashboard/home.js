@@ -29,14 +29,14 @@ const Dashboard = () => {
 
   const currentModel = models[currentIndex];
 
-    const navigateToDashboard = () => {
-        window.location.href = "/dashboard/home";
-    };
+  const navigateToDashboard = () => {
+    window.location.href = "/dashboard/home";
+  };
 
-    const navigateToLogin = () => {
-        localStorage.removeItem("token");
-        window.location.href = "/auth/login";
-    };
+  const navigateToLogin = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/auth/login";
+  };
 
   return (
     <>
@@ -49,7 +49,9 @@ const Dashboard = () => {
           Logout
         </button>
       </div>
-
+      <h2 className="text-lg font-bold text-center mt-8">Dashboard Home</h2>
+      <p className="text-sm text-gray-500 text-center">Answer the following questions to get a drink suitable for you</p>
+      
       <ModelPrediction/>
 
       <div className="container mx-auto mt-8">
@@ -60,20 +62,26 @@ const Dashboard = () => {
             <p className="text-sm text-gray-500">{currentModel.attributes.description}</p>
           </div>
           <div className="p-4 bg-gray-50 flex justify-between">
-            <button
-              onClick={handleNext}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Next
-            </button>
-            <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-              Save
-            </button>
+            {currentIndex === 2 ? (
+              <button
+                disabled
+                className="bg-gray-500 text-white font-bold py-2 px-4 rounded"
+              >
+                Selected Model
+              </button>
+            ) : (
+              <button
+                onClick={handleNext}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Next
+              </button>
+            )}
           </div>
         </div>
       </div>
 
-      <footer className="py-4 px-8 bg-gray-200 text-gray-600 text-sm text-center">
+      <footer className="py-4 px-8 bg-gray-200 text-gray-600 text-sm text-center -end-px">
         &copy; 2023 Assessment App. All rights reserved.
       </footer>
     </>

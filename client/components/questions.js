@@ -1,6 +1,6 @@
 export const questions = [
     {
-      label: "Temperature:",
+      label: "Temperature in Celcius",
       name: "INPUTVAR1",
       type: "number",
     },
@@ -10,7 +10,6 @@ export const questions = [
       type: "select",
       options: [
         { value: "", label: "Select gender" },
-        { value: "Female", label: "Male" },
         { value: "Female", label: "Female" },
       ],
     },

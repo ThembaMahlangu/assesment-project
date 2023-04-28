@@ -7,6 +7,7 @@ const ModelPrediction = () => {
   const [inputValues, setInputValues] = useState({});
   const [prediction, setPrediction] = useState("");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [decisionInfo, setDecisionInfo] = useState({});
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -16,32 +17,55 @@ const ModelPrediction = () => {
     }));
   };
 
-    const handleSubmit = async (event) => {
+  const handleSave = async () => {
+    try {
+      const wins = localStorage.getItem("token");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/decisions`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${wins}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          decision: decisionInfo.data.attributes.decision,
+          confidence: decisionInfo.data.attributes.confidence,
+        }),
+      });
+      console.log(response.data);
+      toast.success("Decision saved successfully");
+    } catch (error) {
+      console.error(error.message);
+      alert(error.message);
+    }
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const token = "9307bfd5fa011428ff198bb37547f979";
     const model = "58d3bcf97c6b1644db73ad12";
     const apiUrl = `https://api.up2tom.com/v3/decision/${model}`;
     const data = {
-        data: {
+      data: {
         type: "scenario",
         attributes: {
-            input: inputValues,
+          input: inputValues,
         },
-        },
+      },
     };
     try {
-        const response = await axios.post(apiUrl, data, {
+      const response = await axios.post(apiUrl, data, {
         headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/vnd.api+json",
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/vnd.api+json",
         },
-        });
-        setPrediction(response.data);
+      });
+      setDecisionInfo(response.data);
+      setPrediction(response.data);
     } catch (error) {
-        console.error(error.message);
-        alert(error.message);
+      console.error(error.message);
+      alert(error.message);
     }
-    };
+  };
 
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -77,7 +101,13 @@ const ModelPrediction = () => {
         {currentQuestionIndex < questions.length - 1 && (
           <button
             type="button"
-            onClick={() => setCurrentQuestionIndex((index) => index + 1)}
+            onClick={() => {
+              if (!inputValues[currentQuestion.name]) {
+                toast.error(`${currentQuestion.label} is required`);
+                return;
+              }
+              setCurrentQuestionIndex((index) => index + 1);
+            }}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
             Next
@@ -93,16 +123,22 @@ const ModelPrediction = () => {
         )}
       </form>
       {prediction && (
-        <div className="mt-4 bg-green-100 p-4 rounded">
-          <p className="font-bold mb-2">Decision Infomation:</p>
-          <p>Decision: {prediction.data.attributes.decision}</p>
-          <p>Level of confidence: {prediction.data.attributes.confidence}</p>
-          <p>Date of decision: {new Date(prediction.data.attributes.timestamp).toLocaleDateString("en-UK")}</p>
-          <p>Type of query: {prediction.data.type}</p>
-        </div>
-      )}
-    </div>
-  );
-};
+  <div className="mt-4 bg-green-100 p-4 rounded">
+    <p className="font-bold mb-2">Decision Infomation:</p>
+    <p>Drink decision: {prediction.data.attributes.decision}</p>
+    <p>Level of confidence: {prediction.data.attributes.confidence}</p>
+    <p>Date of decision: {new Date(prediction.data.attributes.timestamp).toLocaleDateString("en-UK")}</p>
+    <p>Type of query: {prediction.data.type}</p>
+    <button
+      type="button"
+      onClick={handleSave}
+      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+    >
+      Save
+    </button>
+  </div>
+)}
+</div>
+)}
 
 export default ModelPrediction;

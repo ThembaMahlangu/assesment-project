@@ -2,21 +2,25 @@ const mongoose = require('mongoose');
 
 const decisionSchema = new mongoose.Schema({
     name: {
-        type: String,
-        required: [true, 'Name is required.']
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
     },
-    email: {
+    decision: {
         type: String,
-        required: [true, 'Email is required.']
+        required: true
     },
-    phone: {
-        type: String,
-        required: [true, 'Phone is required.']
+    confidence: {
+        type: Number,
+        required: true,
     },
     date: {
         type: Date,
         default: Date.now
     },
+    type: {
+        type: String,
+    }
 }, {
     timestamps: true
 });
